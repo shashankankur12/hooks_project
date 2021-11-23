@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -8,32 +8,35 @@ import {
   Image,
 } from 'react-native';
 
-
 const App = () => {
-  const [movie, setMovie] = useState([])
-  const [isLoading, setLoading] = useState(true)
+  const [movie, setMovie] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    getFoodList()
-  }, [])
+    getFoodList();
+  }, []);
 
   const getFoodList = async () => {
     try {
-      const response = await
-        fetch('https://www.omdbapi.com/?s=Batman&page=2&apikey=663be951')
+      const response = await fetch(
+        'https://www.omdbapi.com/?s=Batman&page=2&apikey=663be951',
+      );
       const json = await response.json();
       setMovie(json.Search);
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
+  };
 
-  }
-
-  const Item = ({ item }) => (
+  const Item = ({item}) => (
     <View style={styles.itemContainer}>
-      <Image style={styles.images} source={{ uri: item.Poster }} resizeMode={'contain'} />
+      <Image
+        style={styles.images}
+        source={{uri: item.Poster}}
+        resizeMode={'contain'}
+      />
 
       <View style={styles.containerItem}>
         <Text style={styles.itemTitle}>{item.Title} </Text>
@@ -41,30 +44,40 @@ const App = () => {
         <Text style={styles.itemTextSmall}>{item.Type} </Text>
       </View>
     </View>
-
   );
 
-  const renderItem = ({ item }) => (
-    <Item item={item} />
-  );
+  const renderItem = ({item}) => <Item item={item} />;
 
   const separator = () => {
-    return <View style={{ width: '100%', backgroundColor: 'grey', marginVertical:3,height:1 }} />;
+    return (
+      <View
+        style={{
+          width: '100%',
+          backgroundColor: 'grey',
+          marginVertical: 3,
+          height: 1,
+        }}
+      />
+    );
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.textHeaderStyle}>Movies</Text>
 
-      {isLoading ? <ActivityIndicator /> : (
-        <FlatList style={styles.listStyle} data={movie}
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          style={styles.listStyle}
+          data={movie}
           ItemSeparatorComponent={separator}
-          renderItem={renderItem} />
+          renderItem={renderItem}
+        />
       )}
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -104,13 +117,12 @@ const styles = StyleSheet.create({
   images: {
     height: 90,
     width: 70,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   listStyle: {
     marginTop: 10,
-    width: '100%'
-  }
-
+    width: '100%',
+  },
 });
 
 export default App;
